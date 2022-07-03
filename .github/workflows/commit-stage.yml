@@ -11,9 +11,24 @@ jobs:
     name: Commit Stage Checks
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 
+      - name: Checkout out branch
         uses: actions/checkout@v3
+        with:
+          path: head
 
       - name: Run Spectral
         uses: stoplightio/spectral-action@latest
-        
+        with:
+          spectral_ruleset: 'head/.spectral.yaml'
+
+      - name: Check out master branch
+        uses: actions/checkout@v3
+        with:
+          ref: master
+          path: base
+
+      - name: Run OpenAPI Diff (from HEAD revision)
+        uses: mvegter/openapi-diff-action@v0.23.5
+        with:
+          head-spec: head/api.oas.yaml
+          base-spec: base/api.oas.yaml
