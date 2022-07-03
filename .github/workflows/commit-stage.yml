@@ -3,6 +3,9 @@ name: API Commit Stage
 on: 
   - pull_request
 
+permissions:
+  metadata: write
+
 jobs:
   commit-stage-checks:
     name: Commit Stage Checks
