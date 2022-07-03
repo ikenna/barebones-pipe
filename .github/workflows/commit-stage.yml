@@ -5,6 +5,7 @@ on:
 
 # permissions:
 #   contents: read
+permissions: read-all
 
 jobs:
   commit-stage-checks:
