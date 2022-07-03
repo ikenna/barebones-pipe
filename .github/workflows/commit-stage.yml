@@ -1,7 +1,7 @@
 name: API Commit Stage
 
 on: 
-  [workflow_dispatch, pull_request]
+  - pull_request
 
 permissions:
   checks: write
@@ -27,8 +27,23 @@ jobs:
           ref: master
           path: base
 
-      - name: Run OpenAPI Diff (from HEAD revision)
-        uses: mvegter/openapi-diff-action@v0.23.5
+      # - name: Run OpenAPI Diff (from HEAD revision)
+      #   uses: mvegter/openapi-diff-action@v0.23.5
+      #   with:
+      #     head-spec: head/api.oas.yaml
+      #     base-spec: base/api.oas.yaml
+
+      - name: "Run breaking change check (OpenAPITools/openapi-diff)"
+        id: diff_state
+        uses: swimmwatch/openapi-diff-action@v1.0.0
         with:
-          head-spec: head/api.oas.yaml
-          base-spec: base/api.oas.yaml
+          old-spec: base/api.oas.yaml
+          new-spec: head/api.oas.yaml
+          json: "out.json"
+          markdown: "out.md"
+          
+      - name: "Print difference state"
+        run: echo "Current state - ${{ steps.diff_state.outputs.state }}."
+        
+
+
