@@ -18,6 +18,8 @@ jobs:
 
       - name: Run Spectral
         uses: stoplightio/spectral-action@latest
+        with:
+          spectral_ruleset: 'head/.spectral.yaml'
 
       - name: Check out master branch
         uses: actions/checkout@v3
