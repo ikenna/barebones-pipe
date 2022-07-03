@@ -3,8 +3,8 @@ name: API Commit Stage
 on: 
   - pull_request
 
-permissions:
-  contents: read
+# permissions:
+#   contents: read
 
 jobs:
   commit-stage-checks:
