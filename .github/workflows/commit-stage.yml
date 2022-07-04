@@ -46,7 +46,8 @@ jobs:
           JF_ENV_1: ${{ secrets.JF_SECRET }}
       - name: "Upload artifacts"
         run: |
-            jf rt u head/api.oas.yaml default-api-generic-local
+            jf rt u head/api.oas.yaml default-api-generic-local/com.aps/product-catalog-api/product-catalog-api-1.0.yaml
+            jf rt bp
       
         
 
