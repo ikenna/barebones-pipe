@@ -1,0 +1,34 @@
+name: Publish to artifact repo
+
+on: 
+  push:  # Trigger on merge to master
+    branches:
+      - master
+
+env:
+  run_number: ${GITHUB_RUN_NUMBER}
+
+permissions:
+  checks: write
+
+
+
+# TODO zip artifacts (spec, test, and config)
+jobs:
+  publish-to-artifact-repo:
+    name: Publish to artifact repo
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out master"
+        uses: actions/checkout@v3
+      - name: "Zip API definition, test and config"
+        run: |
+            zip artifacts.zip api.oas.yaml
+      - name: "Setup Jfrog CLI" 
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_ENV_1: ${{ secrets.JF_SECRET }}
+      - name: "Upload artifacts"
+        run: |
+            jf rt u artifacts.zip default-api-generic-local/com.acmeps/product-catalog-api/artifacts.${{ env.run_number }}.zip
+            jf rt bp
