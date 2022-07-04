@@ -32,6 +32,7 @@ jobs:
           new-spec: head/api.oas.yaml
           json: "out.json"
           markdown: "out.md"
+          # TODO should fail if breaks compatibility
       - name: "Upload OpenAPI-diff report as Github Artifact"
         uses: actions/upload-artifact@v3
         with:
@@ -43,9 +44,9 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET }}
-      - run: |
-            # Ping the server
-            jf rt ping
+      - name: "Upload artifacts"
+        run: |
+            jf rt u head/api.oas.yaml default-api-generic-local
       
         
 
