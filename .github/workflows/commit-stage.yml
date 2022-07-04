@@ -44,7 +44,7 @@ jobs:
             ./out.md
             ./out.json
       - name: "Evaluate diff state"
-        if: ${{ steps.diff_state.outputs.state != 'incompatible' }} 
+        if: ${{ steps.diff_state.outputs.state == 'incompatible' }} 
         uses: actions/github-script@v6
         with:
           script: |
