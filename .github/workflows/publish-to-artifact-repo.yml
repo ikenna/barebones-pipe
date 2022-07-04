@@ -21,11 +21,14 @@ jobs:
     steps:
       - name: "Check out master"
         uses: actions/checkout@v3
+      - name: "Zip API definition, test and config"
+        run: |
+            zip artifacts.zip api.oas.yaml
       - name: "Setup Jfrog CLI" 
         uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET }}
       - name: "Upload artifacts"
         run: |
-            jf rt u head/api.oas.yaml default-api-generic-local/com.acmeps/product-catalog-api/product-catalog-api-${{ env.run_number }}.oas.yaml
+            jf rt u artifacts.zip default-api-generic-local/com.acmeps/product-catalog-api/artifacts.${{ env.run_number }}.zip
             jf rt bp
