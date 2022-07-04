@@ -1,10 +1,7 @@
 name: API Commit Stage
 
 on: 
-  pull_request: # Trigger on pull request
-  push:  # Trigger on pull request 
-    branches:
-      - master
+  - pull_request
 
 env:
   run_number: ${GITHUB_RUN_NUMBER}
@@ -38,7 +35,7 @@ jobs:
           new-spec: head/api.oas.yaml
           json: "out.json"
           markdown: "out.md"
-          # TODO should fail if breaks compatibility
+          fail-on: incompatible
       - name: "Upload OpenAPI-diff report as Github Artifact"
         uses: actions/upload-artifact@v3
         with:
@@ -46,11 +43,4 @@ jobs:
           path: |
             ./out.md
             ./out.json
-      - name: "Upload spec to Artifactory"  # split out into a different acton
-        uses: jfrog/setup-jfrog-cli@v2
-        env:
-          JF_ENV_1: ${{ secrets.JF_SECRET }}
-      - name: "Upload artifacts"
-        run: |
-            jf rt u head/api.oas.yaml default-api-generic-local/com.acmeps/product-catalog-api/product-catalog-api-${{ env.run_number }}.oas.yaml
-            jf rt bp
+
