@@ -44,8 +44,8 @@ jobs:
             ./out.json
       - name: "Evaluate diff state"
         if: ${{ steps.diff_state.outputs.state != 'incompatible' }} 
-        run: echo "Diff state - ${{steps.diff_state.outputs.state}}."
+        uses: actions/github-script@v6
         with:
           script: |
-            core.setFailed('Failed due to breaking change!')
+            core.setFailed("Failed due to breaking change! Diff state - ${{ steps.diff_state.outputs.state }} ")
 
