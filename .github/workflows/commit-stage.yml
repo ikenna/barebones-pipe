@@ -53,10 +53,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14
-      - name: Install Portman
+      - name: Install Newman  # TODO Replace with https://github.com/marketplace/actions/newman-action 
         run: |
-          npm install -g @apideck/portman
-          portman --version
+          npm install -g newman
+          newman --version
+      - name: Run API unit tests (with Newman)
+        run: |
+          newman run api.postman.json 
+      
 
 
 
