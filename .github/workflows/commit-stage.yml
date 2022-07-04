@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: head
-      - name: Run Spectral
+      - name: "Run API linting (with Spectral)"
         uses: stoplightio/spectral-action@latest
         with:
           file_glob: 'head/*.oas.yaml'
@@ -28,14 +28,14 @@ jobs:
         with:
           ref: master
           path: base
-      - name: "Run breaking change check (OpenAPITools/openapi-diff)"
+      - name: "Run breaking change check (with OpenAPITools/openapi-diff)"
+        id: diff_state
         uses: swimmwatch/openapi-diff-action@v1.0.0
         with:
           old-spec: base/api.oas.yaml
           new-spec: head/api.oas.yaml
           json: "out.json"
           markdown: "out.md"
-          fail-on: incompatible
       - name: "Upload OpenAPI-diff report as Github Artifact"
         uses: actions/upload-artifact@v3
         with:
@@ -43,4 +43,10 @@ jobs:
           path: |
             ./out.md
             ./out.json
+      - name: "Evaluate diff state"
+        if: ${{ steps.diff_state.outputs.state == 'incompatible' }} 
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed("Failed due to breaking change! Diff state - ${{ steps.diff_state.outputs.state }} ")
 

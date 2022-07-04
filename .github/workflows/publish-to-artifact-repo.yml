@@ -24,11 +24,11 @@ jobs:
       - name: "Zip API definition, test and config"
         run: |
             zip artifacts.zip api.oas.yaml
-      - name: "Setup Jfrog CLI" 
+      - name: "Setup artifact repository CLI (Jfrog CLI)" 
         uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET }}
-      - name: "Upload artifacts"
+      - name: "Upload to artifact repository (Jfrog Artifactory)"
         run: |
             jf rt u artifacts.zip default-api-generic-local/com.acmeps/product-catalog-api/artifacts.${{ env.run_number }}.zip
             jf rt bp
