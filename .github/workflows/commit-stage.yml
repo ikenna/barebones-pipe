@@ -26,21 +26,26 @@ jobs:
           ref: master
           path: base
       - name: "Run breaking change check (OpenAPITools/openapi-diff)"
-        id: diff_state
         uses: swimmwatch/openapi-diff-action@v1.0.0
         with:
           old-spec: base/api.oas.yaml
           new-spec: head/api.oas.yaml
           json: "out.json"
           markdown: "out.md"
-      - name: "Upload OpenAPI-diff report"
+      - name: "Upload OpenAPI-diff report as Github Artifact"
         uses: actions/upload-artifact@v3
         with:
           name: diff-reports
           path: |
             ./out.md
             ./out.json
-
+      - name: "Upload spec to Artifactory"
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+          JF_ENV_1: ${{ secrets.JF_SECRET }}
+      - run: |
+            # Ping the server
+            jf rt ping
       
         
 
