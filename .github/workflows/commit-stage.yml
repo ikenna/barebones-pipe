@@ -40,15 +40,12 @@ jobs:
           path: |
             ./out.md
             ./out.json
-      - name: "Upload spec to Artifactory"
+      - name: "Upload spec to Artifactory"  # split out into a different acton
         uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_ENV_1: ${{ secrets.JF_SECRET }}
       - name: "Upload artifacts"
         run: |
-            jf rt u head/api.oas.yaml default-api-generic-local/com.aps/product-catalog-api/product-catalog-api-1.0.yaml
+            jf rt u head/api.oas.yaml default-api-generic-local/com.acmeps/product-catalog-api/product-catalog-api-${{ GITHUB_RUN_NUMBER }}.oas.yaml
             jf rt bp
-      
-        
-
-
+            
