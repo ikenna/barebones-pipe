@@ -49,4 +49,19 @@ jobs:
         with:
           script: |
             core.setFailed("Failed due to breaking change! Diff state - ${{ steps.diff_state.outputs.state }} ")
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 14
+      - name: Install Newman  # TODO Replace with https://github.com/marketplace/actions/newman-action 
+        run: |
+          npm install -g newman
+          newman --version
+      - name: Run API unit tests (with Newman)
+        run: |
+          newman run head/api.postman.json 
+      
+
+
+
 

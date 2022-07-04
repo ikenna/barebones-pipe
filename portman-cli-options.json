@@ -1,0 +1,11 @@
+{
+  "local": "api.oas.yaml",
+  "baseUrl": "http://localhost:3050",
+  "output": "api.postman.json",
+  "portmanConfigFile": "portman-config.json",
+  "postmanConfigFile": "postman-config.json",
+  "includeTests": true,
+  "bundleContractTests": true,
+  "syncPostman": false,
+  "runNewman": false
+}
