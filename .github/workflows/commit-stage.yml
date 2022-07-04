@@ -59,7 +59,7 @@ jobs:
           newman --version
       - name: Run API unit tests (with Newman)
         run: |
-          newman run api.postman.json 
+          newman run head/api.postman.json 
       
 
 
