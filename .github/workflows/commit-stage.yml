@@ -15,25 +15,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: head
-
       - name: Run Spectral
         uses: stoplightio/spectral-action@latest
         with:
           file_glob: 'head/*.oas.yaml'
           spectral_ruleset: 'head/.spectral.yaml'
-
       - name: Check out master branch
         uses: actions/checkout@v3
         with:
           ref: master
           path: base
-
-      # - name: Run OpenAPI Diff (from HEAD revision)
-      #   uses: mvegter/openapi-diff-action@v0.23.5
-      #   with:
-      #     head-spec: head/api.oas.yaml
-      #     base-spec: base/api.oas.yaml
-
       - name: "Run breaking change check (OpenAPITools/openapi-diff)"
         id: diff_state
         uses: swimmwatch/openapi-diff-action@v1.0.0
@@ -42,9 +33,15 @@ jobs:
           new-spec: head/api.oas.yaml
           json: "out.json"
           markdown: "out.md"
-          
-      - name: "Print difference state"
-        run: echo "Current state - ${{ steps.diff_state.outputs.state }}."
+      - name: "Upload OpenAPI-diff report"
+        uses: actions/upload-artifact@v3
+        with:
+          name: diff-reports
+          path: |
+            ./out.md
+            ./out.json
+
+      
         
 
 
